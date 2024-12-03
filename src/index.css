@@ -65,7 +65,7 @@ form {
   align-items: flex-start; /* Align items to the start */
   gap: 1rem; /* Space between form and examples */
 
-  margin-top: 2rem; /* Add spacing from the main content */
+  /* margin-top: 2rem; */
   width: 100%; /* Ensure it spans the container */
 
   opacity: 1;

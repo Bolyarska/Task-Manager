@@ -83,6 +83,7 @@ export default function App() {
 
   function handleClearAll() {
     setTasks([]);
+    setExamples(taskExamples);
   }
 
   function handleFilterChange(newFilter) {
@@ -128,7 +129,9 @@ export default function App() {
       {openTaskForm && (
         <div className="form-examples-container">
           <AddTaskForm onAddTask={AddTask} />
-          <ShowTaskExamples examples={examples} onAddTask={AddTask} />
+          {examples.length > 0 && (
+            <ShowTaskExamples examples={examples} onAddTask={AddTask} />
+          )}
         </div>
       )}
     </div>
