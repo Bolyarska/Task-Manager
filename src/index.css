@@ -26,9 +26,9 @@ body {
 
 .container {
   display: flex;
-  justify-content: flex-start; /* Align items properly */
+  justify-content: flex-start;
   align-items: flex-start;
-  position: relative; /* Ensures absolute children stay positioned correctly */
+  position: relative;
 }
 
 .app {
@@ -37,18 +37,18 @@ body {
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  flex-shrink: 0; /* Prevent shrinking of the app when the form is visible */
-  transition: margin-right 0.5s ease; /* Smooth left adjustment */
+  flex-shrink: 0;
+  transition: margin-right 0.5s ease;
 }
 
 .container.shift .app {
-  margin-right: 3rem; /* Only shift when the form is visible */
+  margin-right: 3rem;
 }
 
 form {
-  display: flex; /* Ensure flex layout */
+  display: flex;
   flex-direction: row; /* Stack items vertically */
-  align-items: center; /* Make children span full width */
+  align-items: center;
   justify-content: flex-start; /* Align content at the top */
   gap: 1rem; /* Adds space between form elements */
 
@@ -57,20 +57,30 @@ form {
   background-color: var(--color-light);
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
-  top: 0;
-  right: 0;
-  opacity: 0;
-  transform: scale(0.9);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  pointer-events: none; /* Prevent interaction when hidden */
-  gap: 0.5em;
 }
 
-form.show {
+.form-examples-container {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: flex-start; /* Align items to the start */
+  gap: 1rem; /* Space between form and examples */
+
+  margin-top: 2rem; /* Add spacing from the main content */
+  width: 100%; /* Ensure it spans the container */
+
   opacity: 1;
   transform: scale(1);
-  pointer-events: auto; /* Allow interaction when visible */
+  pointer-events: auto;
+}
+
+.task-examples {
+  width: 100%;
+  max-width: 40rem; /* Match the form's width for symmetry */
+  padding: 2rem;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
 form > input {
@@ -134,13 +144,13 @@ form > input {
 .status-button {
   cursor: pointer;
   font-size: 18px;
-  background-color: transparent; /* Make sure the background is transparent */
-  border: none; /* Remove border */
+  background-color: transparent;
+  border: none;
   padding: 5px 10px;
   font-weight: bold;
-  display: inline-flex; /* Ensure proper alignment of emoji inside the button */
-  align-items: center; /* Align emoji properly */
-  justify-content: center; /* Center the content (emoji) */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .button:hover {

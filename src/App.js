@@ -31,10 +31,19 @@ const initialTasks = [
   },
 ];
 
+const taskExamples = [
+  { id: crypto.randomUUID(), title: "Pay rent", completed: false },
+  { id: crypto.randomUUID(), title: "Throw the trash", completed: false },
+  { id: crypto.randomUUID(), title: "Study", completed: false },
+  { id: crypto.randomUUID(), title: "Make dinner", completed: false },
+  { id: crypto.randomUUID(), title: "Do the laundry", completed: false },
+];
+
 export default function App() {
   const [tasks, setTasks] = useState(initialTasks);
   const [openTaskForm, setOpenTaskForm] = useState(false);
-  const [filter, setFilter] = useState("all"); // New filter state
+  const [filter, setFilter] = useState("all");
+  const [examples, setExamples] = useState(taskExamples);
 
   function handleShowTaskForm() {
     setOpenTaskForm((open) => !open);
@@ -42,7 +51,21 @@ export default function App() {
 
   function AddTask(newTask) {
     setTasks((tasks) => [...tasks, newTask]);
-    setOpenTaskForm(false);
+    removeFromExamples(newTask);
+    // setOpenTaskForm(false);
+  }
+
+  function removeFromExamples(exampleTask) {
+    setExamples((examples) =>
+      examples.filter((example) => example.id !== exampleTask.id)
+    );
+  }
+
+  function addBackToExamples(exampleTaskId) {
+    const exampleTask = taskExamples.find((task) => task.id === exampleTaskId);
+    if (exampleTask) {
+      setExamples((examples) => [...examples, exampleTask]);
+    }
   }
 
   function handleComplete(taskId) {
@@ -55,6 +78,7 @@ export default function App() {
 
   function handleRemove(taskId) {
     setTasks((tasks) => tasks.filter((task) => task.id !== taskId));
+    addBackToExamples(taskId);
   }
 
   function handleClearAll() {
@@ -77,11 +101,13 @@ export default function App() {
         <h1 style={{ textAlign: "center" }}>Task Manager</h1>
 
         <div style={{ textAlign: "right" }}>
-          <Button onClick={handleShowTaskForm}>Add New Task</Button>
+          <Button onClick={handleShowTaskForm}>
+            {openTaskForm ? "Close Form" : "Add New Task"}
+          </Button>
         </div>
 
         <TaskList
-          tasks={filteredTasks} // Use filtered tasks
+          tasks={filteredTasks}
           onComplete={handleComplete}
           onRemove={handleRemove}
         />
@@ -99,7 +125,12 @@ export default function App() {
         </div>
       </div>
 
-      {<AddTaskForm onAddTask={AddTask} show={openTaskForm} />}
+      {openTaskForm && (
+        <div className="form-examples-container">
+          <AddTaskForm onAddTask={AddTask} />
+          <ShowTaskExamples examples={examples} onAddTask={AddTask} />
+        </div>
+      )}
     </div>
   );
 }
@@ -149,7 +180,7 @@ function Task({ onComplete, onRemove, task }) {
   );
 }
 
-function AddTaskForm({ onAddTask, show }) {
+function AddTaskForm({ onAddTask }) {
   const [title, setTitle] = useState("");
   const [completed, setCompleted] = useState(false);
 
@@ -172,7 +203,7 @@ function AddTaskForm({ onAddTask, show }) {
   }
 
   return (
-    <form className={show ? "show" : ""} onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <input
         type="text"
         value={title}
@@ -185,5 +216,28 @@ function AddTaskForm({ onAddTask, show }) {
 
       <Button type="submit">Add</Button>
     </form>
+  );
+}
+
+function ShowTaskExamples({ examples, onAddTask }) {
+  return (
+    <ul className="task-examples">
+      {examples.map((example) => (
+        <TaskExample key={example.id} example={example} onAddTask={onAddTask} />
+      ))}
+    </ul>
+  );
+}
+
+function TaskExample({ example, onAddTask }) {
+  // taskExamples.forEach((task) => console.log(task));
+  function handleExampleClick() {
+    onAddTask(example);
+  }
+
+  return (
+    <li className="task-item" onClick={handleExampleClick}>
+      <h3>{example.title}</h3>
+    </li>
   );
 }
